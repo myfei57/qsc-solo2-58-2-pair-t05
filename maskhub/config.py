@@ -16,6 +16,7 @@ class Settings:
     data_dir: str
     host: str
     port: int
+    reveal_grants: str = ""
 
 
 def parse_listen_address(raw: str) -> tuple[str, int]:
@@ -45,4 +46,5 @@ def load_settings(environ: Mapping[str, str] | None = None) -> Settings:
     data_dir = env.get("MASKHUB_DATA_DIR", "").strip() or DEFAULT_DATA_DIR
     address = env.get("MASKHUB_ADDR", "").strip()
     host, port = parse_listen_address(address) if address else (DEFAULT_HOST, DEFAULT_PORT)
-    return Settings(data_dir=data_dir, host=host, port=port)
+    reveal_grants = env.get("MASKHUB_REVEAL_GRANTS", "").strip()
+    return Settings(data_dir=data_dir, host=host, port=port, reveal_grants=reveal_grants)

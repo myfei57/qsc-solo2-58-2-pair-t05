@@ -3,12 +3,22 @@
 from __future__ import annotations
 
 from maskhub.console.http import Response
-from maskhub.errors import Conflict, InvalidRequest, NotFound
+from maskhub.errors import (
+    Conflict,
+    InvalidRequest,
+    NotFound,
+    PermissionDenied,
+    Unauthorized,
+)
 
 
 def error_response(exc: Exception) -> Response:
     if isinstance(exc, NotFound):
         return Response.json(404, {"error": str(exc)})
+    if isinstance(exc, Unauthorized):
+        return Response.json(401, {"error": str(exc)})
+    if isinstance(exc, PermissionDenied):
+        return Response.json(403, {"error": str(exc)})
     if isinstance(exc, Conflict):
         return Response.json(409, {"error": str(exc)})
     if isinstance(exc, (InvalidRequest, ValueError)):

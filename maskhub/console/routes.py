@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from functools import partial
 
-from maskhub.console.handlers import audit, catalog, policy, rule, source, system
+from maskhub.console.handlers import audit, catalog, mapping, policy, rule, source, system
 from maskhub.console.http import Request, Response
 from maskhub.console.router import Router
 
@@ -28,6 +28,10 @@ def build_router(runtime) -> Router:
     router.post("/rules", bind(rule.create_rule, runtime))
     router.post("/rule/remove", bind(rule.remove_rule, runtime))
     router.post("/rule/match", bind(rule.match_rule, runtime))
+
+    router.post("/tokenize", bind(mapping.tokenize, runtime))
+    router.post("/detokenize", bind(mapping.reveal_mapping, runtime))
+    router.post("/mapping/reveal", bind(mapping.reveal_mapping, runtime))
 
     router.get("/policies", bind(policy.list_policies, runtime))
     router.post("/policies", bind(policy.create_policy, runtime))
