@@ -10,6 +10,8 @@ from maskhub.policy.registry import PolicyRegistry
 from maskhub.rule.registry import RuleRegistry
 from maskhub.source.registry import SourceRegistry
 from maskhub.store.kvstore import RecordStore
+from maskhub.token.grants import GrantRegistry
+from maskhub.token.vault import TokenVault
 
 
 @dataclass
@@ -20,6 +22,8 @@ class Runtime:
     datasets: DatasetRegistry
     rules: RuleRegistry
     policies: PolicyRegistry
+    vault: TokenVault
+    grants: GrantRegistry
 
 
 def build_runtime(store: RecordStore) -> Runtime:
@@ -30,4 +34,6 @@ def build_runtime(store: RecordStore) -> Runtime:
         datasets=DatasetRegistry(store),
         rules=RuleRegistry(store),
         policies=PolicyRegistry(store),
+        vault=TokenVault(store),
+        grants=GrantRegistry(store),
     )

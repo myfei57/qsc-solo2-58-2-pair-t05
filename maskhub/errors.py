@@ -17,3 +17,7 @@ class Conflict(MaskHubError):
 
 class InvalidRequest(MaskHubError):
     """Raised when a request violates the gateway contract."""
+
+
+class Forbidden(MaskHubError):
+    """Raised when a caller lacks the grant required for an operation."""

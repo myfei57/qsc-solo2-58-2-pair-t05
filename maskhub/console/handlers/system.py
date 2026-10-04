@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from maskhub.console.http import Request, Response
 from maskhub.store.query import count_with_prefix, key_metrics
+from maskhub.token.vault import MAP_PREFIX
 
 
 def health(runtime, request: Request) -> Response:
@@ -21,6 +22,7 @@ def status(runtime, request: Request) -> Response:
             "datasets": count_with_prefix(runtime.store, "dataset."),
             "rules": count_with_prefix(runtime.store, "rule."),
             "policies": count_with_prefix(runtime.store, "policy."),
+            "tokens": count_with_prefix(runtime.store, MAP_PREFIX),
             "serving_policies": [policy.identifier for policy in runtime.policies.serving()],
             "audit_actions": runtime.journal.summary(),
             "sensitive_surface": runtime.datasets.sensitive_surface(),

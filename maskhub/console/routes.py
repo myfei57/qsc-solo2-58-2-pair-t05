@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from functools import partial
 
-from maskhub.console.handlers import audit, catalog, policy, rule, source, system
+from maskhub.console.handlers import audit, catalog, policy, rule, source, system, token
 from maskhub.console.http import Request, Response
 from maskhub.console.router import Router
 
@@ -40,6 +40,13 @@ def build_router(runtime) -> Router:
     router.get("/audit/summary", bind(audit.audit_summary, runtime))
     router.get("/audit/latest", bind(audit.audit_latest, runtime))
     router.get("/audit/action", bind(audit.audit_by_action, runtime))
+
+    router.post("/tokens", bind(token.tokenize, runtime))
+    router.post("/token/detokenize", bind(token.detokenize, runtime))
+    router.post("/token/grant", bind(token.grant, runtime))
+    router.post("/token/revoke", bind(token.revoke, runtime))
+    router.get("/token/grants", bind(token.list_grants, runtime))
+    router.get("/token/stats", bind(token.token_stats, runtime))
 
     def route_table(request: Request) -> Response:
         return Response.json(200, {"count": len(router), "routes": router.describe()})
